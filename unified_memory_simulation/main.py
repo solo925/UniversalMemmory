@@ -1,12 +1,12 @@
-from memory_simulation.py import UnifiedMemory
+from memory_simulation import UnifiedMemory
 from cpu_simulation import CPU
 from persistence import PersistenceManager
 from app_simulation import Application
 
 def main():
     # Initialize the memory system (e.g., 10 units of RAM and 10 units of persistent memory)
-    ram_size = 10
-    persistent_size = 10
+    ram_size = 16
+    persistent_size = 20
     memory = UnifiedMemory(ram_size, persistent_size)
 
     # Initialize the CPU
