@@ -1,4 +1,4 @@
-# Handlin persistence Storage
+import os
 import numpy as np
 
 class PersistenceManager:
@@ -15,5 +15,5 @@ class PersistenceManager:
             print(f"Persistent memory loaded from {self.filepath}.")
             return data
         except FileNotFoundError:
-            print("No persistent memory file found. Initializing new persistent memory.")
-            return None
+            print(f"No persistent memory file found for {self.filepath}. Initializing new persistent memory.")
+            return np.zeros(10, dtype='float64')  # Default size for simplicity

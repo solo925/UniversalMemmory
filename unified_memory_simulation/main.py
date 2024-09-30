@@ -1,31 +1,46 @@
-from memory_simulation import UnifiedMemory
-from cpu_simulation import CPU
+from device_simulation import Laptop, Phone, Server, Smartwatch, IoTDevice, Desktop
+from power_management import PowerCycle
 from persistence import PersistenceManager
+from network_simulation import NetworkSimulation
+from cloud_simulation import CloudSimulation
 from app_simulation import Application
+from visualization import visualize_memory, visualize_cpu
 
 def main():
-    # Initialize the memory system (e.g., 10 units of RAM and 10 units of persistent memory)
-    ram_size = 16
-    persistent_size = 20
-    memory = UnifiedMemory(ram_size, persistent_size)
+    # Initialize devices
+    laptop = Laptop()
+    phone = Phone()
+    server = Server()
+    smartwatch = Smartwatch()
+    iot_device = IoTDevice()
+    desktop = Desktop()
 
-    # Initialize the CPU
-    cpu = CPU(memory)
+    devices = [laptop, phone, server, smartwatch, iot_device, desktop]
 
-    # Persistence Management (simulating power cycle)
-    persistence_manager = PersistenceManager("persistent_memory.npy")
+    # Persistence managers for each device
+    persistence_managers = {device.device_type: PersistenceManager(f'{device.device_type}_persistent.npy') for device in devices}
 
-    # Load persistent memory if available
-    loaded_persistent_memory = persistence_manager.load_from_disk()
-    if loaded_persistent_memory is not None:
-        memory.persistent_memory = loaded_persistent_memory
+    # Simulate power cycles
+    for device in devices:
+        power_cycle = PowerCycle(device, persistence_managers[device.device_type])
+        power_cycle.simulate_power_off_on()
 
-    # Run the application simulation
-    app = Application(cpu)
-    app.run_simulation()
+    # Simulate network interaction
+    network = NetworkSimulation(devices)
+    network.simulate_network_interaction()
 
-    # Save persistent memory before shutdown
-    persistence_manager.save_to_disk(memory.persistent_memory)
+    # Simulate cloud interaction
+    cloud = CloudSimulation()
+    for device in devices:
+        cloud.sync_with_cloud(device)
+
+    # Run a multi-threaded application on the desktop
+    desktop_app = Application(desktop.cpu)
+    desktop_app.run_multithreaded()
+
+    # Visualize memory and CPU usage
+    visualize_memory(desktop)
+    visualize_cpu(desktop)
 
 if __name__ == "__main__":
     main()

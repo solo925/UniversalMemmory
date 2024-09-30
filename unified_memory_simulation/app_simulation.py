@@ -1,16 +1,16 @@
-# Sample Application Interacting with Memory\
-# This is a simple app simulating the state saved across power cycles.
+import time
 class Application:
     def __init__(self, cpu):
         self.cpu = cpu
 
-    def run_simulation(self):
-        # Initial Writes
-        self.cpu.execute_write(0, 42.0)  # Write to RAM
-        self.cpu.execute_write(0, 84.0, is_persistent=True)  # Write to Persistent Memory
-        self.cpu.execute_write(1, 21.0, is_persistent=True)
+    def compute_intensive_task(self, cycles):
+        for i in range(cycles):
+            self.cpu.execute_write(i, i * 1.1)
+            self.cpu.execute_read(i)
+            time.sleep(0.1)
 
-        # Read Data
-        self.cpu.execute_read(0)  # Read from RAM
-        self.cpu.execute_read(0, is_persistent=True)  # Read from Persistent Memory
-        self.cpu.execute_read(1, is_persistent=True)
+    def run_multithreaded(self):
+        # Run multiple tasks concurrently
+        self.cpu.multitasking_simulation(self.compute_intensive_task, (10,))
+        self.cpu.multitasking_simulation(self.compute_intensive_task, (10,))
+        self.cpu.wait_for_tasks()
