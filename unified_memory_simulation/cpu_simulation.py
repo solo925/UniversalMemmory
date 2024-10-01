@@ -15,7 +15,6 @@ class CPU:
 
     def execute_write(self, address, value, is_persistent=False):
         self.memory.write_to_memory(address, value, is_persistent)
-        print(f"{self.device_type} CPU Write to {'Persistent' if is_persistent else 'RAM'} Memory[{address}]: {value}")
 
     def manage_cache(self, address):
         self.memory.handle_cache(address)

@@ -6,8 +6,11 @@ class PersistenceManager:
         self.filepath = filepath
 
     def save_to_disk(self, data):
-        np.save(self.filepath, data)
-        print(f"Persistent memory saved to {self.filepath}.")
+        try:
+            np.save(self.filepath, data)
+            print(f"Persistent memory saved to {self.filepath}.")
+        except IOError as e:
+            print(f"Error saving memory to {file_path}: {e}")
 
     def load_from_disk(self):
         try:
